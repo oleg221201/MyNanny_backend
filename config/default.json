@@ -1,0 +1,4 @@
+{
+  "mongoDbUrl": "mongodb+srv://user:password12345@cluster0.x4l3s.mongodb.net/my_nanny?retryWrites=true&w=majority",
+  "jwtKey": "Very secret key"
+}
