@@ -57,7 +57,7 @@ router.get("/parents", async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const advertisement = await Advertisement.find({userId: req.params.id})
+        const advertisement = await Advertisement.findOne({userId: req.params.id})
         if (!advertisement) {
             return res.status(400).json({message: "This user don`t have advertisement"})
         }
@@ -76,15 +76,15 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
-router.put('/respond/:id', async  (req, res) => {
-    const advertisement = await Advertisement.find({userId: req.params.id})
+router.put('/respond/:id', auth, async  (req, res) => {
+    const advertisement = await Advertisement.findOne({userId: req.params.id})
     if (!advertisement) {
         return res.status(400).json({message: "This user don`t have advertisement"})
     }
 
     if (!advertisement.responds.includes(req.user.id)) {
         advertisement.responds.unshift(req.user.id)
-        await Advertisement.update({userId: req.params.id}, {responds: advertisement.responds})
+        await Advertisement.updateOne({userId: req.params.id}, {responds: advertisement.responds})
         return res.json({message: "Your respond successfully saved"})
     }
     else {
