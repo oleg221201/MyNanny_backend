@@ -1,7 +1,7 @@
 const {Schema, model, Types} = require('mongoose')
 
 const schema = Schema({
-    userId: {type: Types.ObjectId, ref: 'User', unique: true},
+    userId: {type: Types.ObjectId, ref: 'User', unique: true, required: true},
     parentName: {type: String, required: true},
     childName: {type: String, required: true},
     childAge: {type: Number, required: true},

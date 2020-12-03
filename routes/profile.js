@@ -54,4 +54,22 @@ router.get('/:type', auth, async (req, res) => {
     }
 })
 
-module.exports = router()
+router.put('', auth, async (req, res) => {
+    try {
+        if (req.body.type === "nanny") {
+            const {name, age, city, salary, description} = req.body
+            await Nanny.update({userId: req.user.id}, {name, age, city, salary, description})
+            return res.json({message: "Profile updated successfully"})
+        }
+        if (req.body.type === "parent") {
+            const {parentName, childName, childAge, city, salary, description} = req.body
+            await Nanny.update({userId: req.user.id}, {parentName, childName, childAge, city, salary, description})
+            return res.json({message: "Profile updated successfully"})
+        }
+        res.status(400).json({message: "Type error (no type)"})
+    } catch (err){
+        res.status(400).json({message: "Something go wrong, try again"})
+    }
+})
+
+module.exports = router
