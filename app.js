@@ -11,6 +11,7 @@ app.use(express.json({extended: true}))
 app.use('/api/auth', require("./routes/auth"))
 app.use('/api/profile', require("./routes/profile"))
 app.use('/api/advertisement', require("./routes/advertisement"))
+app.use("/api/filter", require('./routes/filter'))
 
 
 async function startApp () {

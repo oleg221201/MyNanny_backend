@@ -1,13 +1,11 @@
 const {Router} = require('express')
 const Advertisement = require('../models/Advertisement')
-const Nanny = require("../models/Nanny")
-const Parent = require("../models/Parent")
 const auth = require("../middleware/auth.middelware")
 const router = Router()
 
 router.post("/", auth, async (req, res) => {
     try {
-        const advertisement = await Advertisement.create({userId: req.user.id})
+        const advertisement = await Advertisement.create({userId: req.user.id, type: req.body.type})
         if (!advertisement) {
             return res.status(400).json({message: "Something go wrong, try again"})
         }
@@ -19,17 +17,10 @@ router.post("/", auth, async (req, res) => {
 
 router.get("/nannies", async (req, res) => {
     try {
-        let nannies = []
-        const advertisements = await Advertisement.find({})
-        if (!advertisements) {
+        const nannies = await Advertisement.find({type: "nanny"})
+        if (!nannies) {
             return res.status(400).json({message: "There is no advertisements"})
         }
-
-        for (const i of advertisements) {
-            let nanny = await Nanny.find({userId: i.userId})
-            nannies.unshift(nanny)
-        }
-
         res.json({nannies})
     } catch (err) {
         res.status(400).json({message: "Something go wrong, try again"})
@@ -38,17 +29,10 @@ router.get("/nannies", async (req, res) => {
 
 router.get("/parents", async (req, res) => {
     try {
-        let parents = []
-        const advertisements = await Advertisement.find({})
-        if (!advertisements) {
+        const parents = await Advertisement.find({type: "parent"})
+        if (!parents) {
             return res.status(400).json({message: "There is no advertisements"})
         }
-
-        for (const i of advertisements) {
-            let parent = await Parent.find({userId: i.userId})
-            parents.unshift(parent)
-        }
-
         res.json({parents})
     } catch (err) {
         res.status(400).json({message: "Something go wrong, try again"})
