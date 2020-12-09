@@ -5,12 +5,15 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "nodemon app.js"
+    "test": "nodemon app.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run test\" \"npm run client\""
   },
   "author": "Oleh Popovych",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "concurrently": "^5.3.0",
     "config": "^3.3.3",
     "express": "^4.17.1",
     "express-validator": "^6.6.1",
