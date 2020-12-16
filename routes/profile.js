@@ -41,16 +41,16 @@ router.get('/', auth, async (req, res) => {
 
         user = await Nanny.findOne({userId: req.user.id})
         if (user) {
-            return res.json({user})
+            return res.json({user: user, isCreated: true})
         }
 
         user = await Parent.findOne({userId: req.user.id})
         if (user) {
-            return res.json({user})
+            return res.json({user: user, isCreated: true})
         }
 
         if (!user) {
-            return res.status(400).json({message: "Type error (no type)"})
+            return res.json({isCreated: false})
         }
     } catch (err){
         res.status(400).json({message: "Something go wrong, try again"})

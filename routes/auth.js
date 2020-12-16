@@ -10,13 +10,14 @@ const User = require('../models/User')
 router.post('/registration',
     [
         check('email', 'Invalid email').isEmail(),
-        check('password', 'Minimum length of password is 5 symbols').isLength({min: 5})
+        check('password', 'Minimum length of password is 5 symbols').isLength({min: 5}),
+        check('type', "Choose type").notEmpty()
     ],
     async (req, res) => {
         try {
             const errors = validationResult(req)
             if (!errors.isEmpty()){
-                return res.status(400).json({
+                return res.json({
                     message: "Invalid register data",
                     err: errors.array()
                 })
@@ -25,7 +26,7 @@ router.post('/registration',
             const {email, password, type} = req.body
             const user = await User.findOne({email})
             if (user){
-                res.status(400).json({message: "User already exists"})
+                res.json({message: "User already exists"})
             }
 
             const hashedPassword = await bcrypt.hash(password, 12)
@@ -39,7 +40,7 @@ router.post('/registration',
 
             res.status(201).json({token: token, userId: result._id, type: type})
         }catch (err) {
-            res.status(400).json({message: "Something go wrong, try again", err: err.message})
+            res.json({message: "Something go wrong, try again"})
         }
 })
 
@@ -52,7 +53,7 @@ router.post('/login',
         try {
             const errors = validationResult(req)
             if (!errors.isEmpty()){
-                return res.status(400).json({
+                return res.json({
                     message: "Invalid login data",
                     err: errors.array()
                 })
@@ -61,12 +62,12 @@ router.post('/login',
             const {email, password} = req.body
             const user = await User.findOne({email})
             if (!user) {
-                res.status(400).json({message: "Something go wrong, try again"})
+                res.json({message: "Something go wrong, try again"})
             }
 
             const isCorrectPassword = await bcrypt.compare(password, user.password)
             if (!isCorrectPassword){
-                res.status(400).json({message: "Something go wrong, try again"})
+                res.json({message: "Something go wrong, try again"})
             }
 
             const token = jwt.sign(
@@ -77,7 +78,7 @@ router.post('/login',
 
             res.status(201).json({token, userId: user._id, type: user.type})
         }catch (err) {
-            res.status(400).json({message: "Something go wrong, try again", err: err.message})
+            res.json({message: "Something go wrong, try again", err: err.message})
         }
     })
 

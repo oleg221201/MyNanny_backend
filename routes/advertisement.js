@@ -43,7 +43,7 @@ router.get('/:id', async (req, res) => {
     try {
         const advertisement = await Advertisement.findOne({userId: req.params.id})
         if (!advertisement) {
-            return res.status(400).json({message: "This user don`t have advertisement"})
+            return res.json({message: "This user don`t have advertisement"})
         }
         res.json({responds: advertisement.responds})
     } catch (err) {
