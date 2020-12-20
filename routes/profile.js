@@ -1,6 +1,7 @@
 const {Router} = require('express')
 const Nanny = require('../models/Nanny')
 const Parent = require('../models/Parent')
+const User = require('../models/User')
 const auth = require("../middleware/auth.middelware")
 const router = Router()
 
@@ -52,6 +53,38 @@ router.get('/', auth, async (req, res) => {
         if (!user) {
             return res.json({isCreated: false})
         }
+    } catch (err){
+        res.status(400).json({message: "Something go wrong, try again"})
+    }
+})
+
+router.get('/:id', async (req, res) => {
+    try{
+        let user = null;
+
+        user = await Nanny.findOne({userId: req.params.id})
+        if (user) {
+            return res.json({user: user})
+        }
+
+        user = await Parent.findOne({userId: req.params.id})
+        if (user) {
+            return res.json({user: user})
+        }
+
+        if (!user) {
+            return res.status(400).json({message: "Something go wrong, try again"})
+        }
+    } catch (err){
+        res.status(400).json({message: "Something go wrong, try again"})
+    }
+})
+
+router.get('/email/:id', async (req, res) => {
+    try{
+        const user = await User.findById(req.params.id)
+        return res.json({email: user.email})
+
     } catch (err){
         res.status(400).json({message: "Something go wrong, try again"})
     }

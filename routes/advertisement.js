@@ -69,10 +69,10 @@ router.put('/respond/:id', auth, async  (req, res) => {
     if (!advertisement.responds.includes(req.user.id)) {
         advertisement.responds.unshift(req.user.id)
         await Advertisement.updateOne({userId: req.params.id}, {responds: advertisement.responds})
-        return res.json({message: "Your respond successfully saved"})
+        return res.json({message: "Ваше зацікавлення вдало зафіксовано!"})
     }
     else {
-        return res.json({message: "You are already responded"})
+        return res.json({message: "Ваше зацікавлення вже зафіксоване!"})
     }
 })
 
