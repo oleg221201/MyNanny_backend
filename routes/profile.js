@@ -90,24 +90,5 @@ router.get('/email/:id', async (req, res) => {
     }
 })
 
-router.put('', auth, async (req, res) => {
-    try {
-        if (req.body.type === "nanny") {
-            const {name, age, city, salary, description} = req.body
-            await Nanny.updateOne({userId: req.user.id},
-                {name, age, city, salary, description})
-            return res.json({message: "Profile updated successfully"})
-        }
-        if (req.body.type === "parent") {
-            const {parentName, childName, childAge, city, salary, description} = req.body
-            await Parent.updateOne({userId: req.user.id},
-                {parentName, childName, childAge, city, salary, description})
-            return res.json({message: "Profile updated successfully"})
-        }
-        res.status(400).json({message: "Type error (no type)"})
-    } catch (err){
-        res.status(400).json({err: err.message, message: "Something go wrong, try again"})
-    }
-})
 
 module.exports = router

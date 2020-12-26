@@ -4,7 +4,7 @@ const Parent = require("../models/Parent")
 const Advertisement = require("../models/Advertisement")
 const router = Router()
 
-router.get('/nanny/cities', async (req, res) => {
+router.get('/nanny', async (req, res) => {
     try {
         const nannies = await Advertisement.find({type: "nanny"})
         let cities = []
@@ -18,7 +18,7 @@ router.get('/nanny/cities', async (req, res) => {
     }
 })
 
-router.get('/parent/cities', async (req, res) => {
+router.get('/parent', async (req, res) => {
     try {
         const parents = await Advertisement.find({type: "parent"})
         let cities = []
